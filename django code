@@ -1,0 +1,83 @@
+[1] 장고 설치
+
+    mv projects
+    mkdir 프로젝트이름
+    git init
+    virtualenv --python=python3.6 venv
+    source venv/bin/activate
+    pip install django==2.2
+    django-admin startproject 프로젝트이름 .
+
+[2] 앱에 views로 페이지만들기
+
+    1. terminal
+        python manage.py startapp 앱이름
+
+    2. urls.py in project
+        from django.urls import path, include
+        path('', include('앱이름.urls'))
+
+    3. urls.py 생성
+        from django.urls import path
+        from . import views
+        urlpatterns = [
+            path('', views.함수이름, name='home'),
+        ]
+
+    4. views.py
+        from django.http import HttpResponse
+        def 함수이름(request):
+            return HttpResponse("hello world")
+
+    (팁! 함수이름을 정할 때, html파일 이름과 같게해주면 통일성이 생겨 코딩하기 쉽다)
+
+[3] templates로 페이지 만들
+
+    1. templates폴더 생성
+    2. home.html 생성
+    3. settings.py
+        [os.path.join(BASE_DIR, 'templates')]
+    4. views.py > def home)
+        return render(request, 'home.html')
+    (팁! 딕셔너리로, 다이나믹하게 사용방법 )
+        return render(request, 'home.html' {'name' : 'Sim'})
+        {{ name }}
+
+[4] base.html 생성하여 기본데이터로 상속하기
+
+    1. base.html
+        <body bgcolor="lightpink">
+            {% block content %}
+            {% endblock %}
+        </body>
+
+    2. home.html
+        {% extends 'base.html' %}
+        {% block content %}
+           <h1> hello world!!!! <h1>
+        {% endblock  %}
+
+[5] 데이터 request & response (from 클라이언트 to 서버)
+
+    1. home.html
+        <form action="add">
+            enter 1st number : <input type="text" name="num1"><br>
+            enter 2st number : <input type="text" name="num2"><br>
+            <input type="submit">
+        </form>
+
+    2. urls.py
+        path('add', views.add, name='add'),
+
+    3. views.py
+        def add(request):
+            val1 = request.GET['num1']
+            val2 = request.GET['num2']
+            result = val1) + int(val2)
+            return render(request, 'result.html', {'res' : 'result' )
+
+    4. result.html
+        {% extends 'base.html' %}
+        {% block content %}
+        The Result : {{ result }}
+        {% endblock %}
