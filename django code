@@ -81,3 +81,36 @@
         {% block content %}
         The Result : {{ result }}
         {% endblock %}
+
+    5. 데이터 POST로 받기
+        - home.html
+            <form action="add" method="post">
+            {% csrf_token %}
+        - views.py
+            GET to POST
+
+[6] 템플릿 다운받고 설치
+
+    1. python manage.py startapp travello
+    2. index.html 복사넣기
+    3. urls.py (in project)
+        path('', include('travello.urls')),
+
+    4. urls.py (in travello)
+        path('', views.index, name='index' ),
+
+    5. views.py
+        def index(request):
+            return render(request, 'index.html')
+
+    6. static파일 설치
+        - settings.py
+            STATICFILES_DIRS = [
+                os.path.join(BASE_DIR, 'static')
+            ]
+            STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+        - python manage.py collectstatic
+
+        - index.html
+            {% static ' absolute url ' %)
