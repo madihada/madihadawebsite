@@ -114,3 +114,59 @@
 
         - index.html
             {% static ' absolute url ' %)
+
+[7] html에 데이터 보내기 from views.py
+
+    1. models.py
+    2. views.py
+    3. .html
+    4. img는 jinja 안에 jinja라서 {% static "images" as baseUrl %}, 한개 더 추가해줘야함
+
+
+[8] html에 데이터 보내기 from database
+
+    1. postgres 설치, 파이썬(장고와)어댑터 설치
+
+        (세 개 중 하나)
+        pip install psycopg2==2.7.4
+        pip install psycopg2-binary==2.8.3
+        echo:$echopath : /Library/PostgreSQL/10/bin
+
+    2. 장고에 설정
+        settings.py
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql',
+                    'NAME': 'test',
+                    'USER': 'postgres',
+                    'PASSWORD': 'recon0928',
+                    'HOST': 'localhost',
+                    'PORT': '5432'
+            }
+            }
+            INSTALLED_APPS = [
+                'travello.apps.TravelloConfig'
+            ]
+
+    3. 장고와 연결
+        python manage.py makemigrations
+        (이 부분은 왜 있는거지... 다른사람은 안하던데 한번 꼭 넣어야하는지 테스트해봐야겠따)
+        python manage.py sqlmigrate travello 0001
+                                    (앱이름) : app.py와 연결
+        python manage.py migrate
+
+[9] Client가 데이터 보내기 to Database
+
+    1. admin.py = admin에 model 넣기
+        from django.contrib import admin
+        from .models import Destination
+        admin.site.register(Destination)
+
+    2. settings.py = 미디어 루트 정하기 : 미디어파일 경로 표시
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+        MEDIA_URL = '/media/'
+
+    3. urls.py in project = 이해안됨, url이 변경되므로 url을 static으로 알려주는거같
+        from django.conf imoprt settings
+        from django.conf.urls.static import static
+        urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
