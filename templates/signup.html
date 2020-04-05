@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="아이디"><br>
+        <input type="email" name="email" placeholder="이메일"><br>
+        <input type="password" name="password1" placeholder="비밀번호"><br>
+        <input type="password" name="password2" placeholder="비밀번호확인"><br>
+        <input type="submit">
+    </form>
+
+<div>
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</div>
+</body>
+</html>
